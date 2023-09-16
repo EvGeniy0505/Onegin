@@ -55,8 +55,8 @@ int main()
 
     PrintText(ArrOfPtr, QuantityOfStrs);
 
-    free(ArrOfPtr[i]);
-    free(ArrOfPtr[i]);
+    free(Buff);
+    free(ArrOfPtr);
 
     fclose(fp);
 

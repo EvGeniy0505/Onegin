@@ -11,48 +11,59 @@ struct text_params
     char* arr_of_ptrs_on_strs;
 };
 
-void count_symbls(FILE* all_file, text_params* all_symbls);
+size_t count_symbls(FILE* all_file);
+
 size_t count_strs(char* text, size_t len_text);
 
 
 int main()
 {
-    FILE* file = fopen("Mockingbird.txt", "r");
+    const char* path_to_file = "Mockingbird.txt";
+
+    FILE* file = fopen(path_to_file, "r");
 
     assert(file != NULL);
     assert(ferror(file) == 0);
 
-    struct text_params* tp = NULL;
+    struct text_params tp = {};
 
-    count_symbls(file, tp);
+    tp.len_buff = count_symbls(file);
 
-    printf("%zu", tp -> len_buff);  
+    printf("%zu\n", tp.len_buff);  
 
-    char* buff = (char*) calloc(tp -> len_buff, sizeof(char));
+    tp.buff = (char*) calloc(tp.len_buff, sizeof(char));
 
-    fread(buff, sizeof(char), tp -> len_buff, file);
+    fread(tp.buff, sizeof(char), tp.len_buff, file);
 
-    tp -> quantity_strs = count_strs(buff, tp -> len_buff) + 1;
+    tp.quantity_strs = count_strs(tp.buff, tp.len_buff) + 1;
 
-    printf("%zu", tp -> quantity_strs);   
+    printf("%zu\n", tp.quantity_strs);   
 
-    char* arr_of_ptrs_on_strs = (char*) calloc(tp -> quantity_strs, sizeof(char*));
+    tp.arr_of_ptrs_on_strs = (char*) calloc(tp.quantity_strs, sizeof(char*));
 
-    arr_of_ptrs_on_strs[0] = buff[0];
+    tp.arr_of_ptrs_on_strs[0] = tp.buff[0];
 
     size_t num_of_ptr = 1;
 
     size_t num_of_symb = 0;
 
-    for(num_of_symb = 0; num_of_symb < tp -> quantity_strs; num_of_symb++)
+    for(num_of_symb = 0; num_of_symb < tp.quantity_strs; num_of_symb++)
     {
-        if(buff[num_of_symb] == '/n')
+        if(tp.buff[num_of_symb] == '\n')
         {
-            arr_of_ptrs_on_strs[num_of_ptr] = buff[num_of_symb + 1];
+            tp.arr_of_ptrs_on_strs[num_of_ptr] = tp.buff[num_of_symb + 1];
 
             num_of_ptr++;
         }
     }        
+
+    for(num_of_symb = 0; num_of_symb < tp.len_buff; num_of_symb++)
+    {
+        printf("%c", tp.buff[num_of_symb]);
+    }      
+
+    free(tp.buff);
+    free(tp.arr_of_ptrs_on_strs);
 
     //void* q_sort(void* arr_of_ptrs_on_strs, size_t (tp -> quantity_strs), size_t size, int(*compare)(void* a, void* b));   
 
@@ -75,12 +86,11 @@ size_t count_strs(char* text, size_t len_text)
     return quantity_strs;
 }
 
-
-void count_symbls(FILE* all_file, text_params* all_symbls)
+size_t count_symbls(FILE* all_file)
 {
     struct stat st;
 
     fstat(fileno(all_file), &st);
 
-    all_symbls -> len_buff = st.st_size + 1;
+    return (size_t)st.st_size + 1;
 }

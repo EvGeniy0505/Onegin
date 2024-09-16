@@ -15,6 +15,10 @@ size_t count_symbls(FILE* all_file);
 
 size_t count_strs(char* text, size_t len_text);
 
+void allocate_arr_of_ptrs(text_params* str_tp);
+
+void Constructor_text_params(text_params* tp_constr);
+
 
 int main()
 {
@@ -29,7 +33,7 @@ int main()
 
     tp.len_buff = count_symbls(file);
 
-    printf("%zu\n", tp.len_buff);  
+    //printf("%zu\n", tp.len_buff);  
 
     tp.buff = (char*) calloc(tp.len_buff, sizeof(char));
 
@@ -37,30 +41,16 @@ int main()
 
     tp.quantity_strs = count_strs(tp.buff, tp.len_buff) + 1;
 
-    printf("%zu\n", tp.quantity_strs);   
+    //printf("%zu\n", tp.quantity_strs);   
 
     tp.arr_of_ptrs_on_strs = (char*) calloc(tp.quantity_strs, sizeof(char*));
 
-    tp.arr_of_ptrs_on_strs[0] = tp.buff[0];
+    allocate_arr_of_ptrs(&tp);
 
-    size_t num_of_ptr = 1;
-
-    size_t num_of_symb = 0;
-
-    for(num_of_symb = 0; num_of_symb < tp.quantity_strs; num_of_symb++)
-    {
-        if(tp.buff[num_of_symb] == '\n')
-        {
-            tp.arr_of_ptrs_on_strs[num_of_ptr] = tp.buff[num_of_symb + 1];
-
-            num_of_ptr++;
-        }
-    }        
-
-    for(num_of_symb = 0; num_of_symb < tp.len_buff; num_of_symb++)
-    {
-        printf("%c", tp.buff[num_of_symb]);
-    }      
+    //for(size_t num_of_symb = 0; num_of_symb < tp.quantity_strs; num_of_symb++)
+    //{
+    //    printf("%d\n", tp.arr_of_ptrs_on_strs[num_of_symb]);
+    //}      
 
     free(tp.buff);
     free(tp.arr_of_ptrs_on_strs);
@@ -94,3 +84,25 @@ size_t count_symbls(FILE* all_file)
 
     return (size_t)st.st_size + 1;
 }
+
+void allocate_arr_of_ptrs(text_params* str_tp)
+{
+    str_tp -> arr_of_ptrs_on_strs[0] = str_tp -> buff[0];
+
+    size_t num_of_ptr = 1;
+    size_t num_of_symb = 0;
+
+    for(num_of_symb = 0; num_of_symb < str_tp -> len_buff; num_of_symb++)
+    {
+        if(str_tp -> buff[num_of_symb] == '\n')
+        {
+            str_tp -> arr_of_ptrs_on_strs[num_of_ptr] = str_tp -> buff[num_of_symb + 1];
+            num_of_ptr++;
+        }
+    }        
+}
+
+//void Constructor_text_params(text_params* tp_constr)
+//{
+//    tp_constr -> 
+//}

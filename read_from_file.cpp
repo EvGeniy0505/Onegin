@@ -44,31 +44,34 @@ void allocate_arr_of_ptrs(text_params* str_tp)
     }        
 }
 
-FILE* open_file()
+FILE* open_file(text_params* tp)
 {
     const char* path_to_file = "Mockingbird.txt";
 
-    FILE* open_file = fopen(path_to_file, "r");
+    tp -> file = fopen(path_to_file, "r");
 
-    assert(open_file != NULL);
-    assert(ferror(open_file) == 0);
+    assert(tp -> file != NULL);
+    assert(ferror(tp -> file) == 0);
 
-    return open_file;
+    return tp -> file;
 }
 
 text_params read_from_file()
 {
-    FILE* file = open_file();
+    // TODO этот конструктор эквавалентен tp = { file, ...}
+    // а здесь вообще ты его zero-инициализируешь, так что не выёбывайся
+    // и сделай tp = {}
+    text_params tp = constructor_text_params(NULL, 0, 0, NULL, NULL);
+    // TODO open_file тоже устанавливает tp.file, зачем это дважды делать?
+    tp.file = open_file(&tp);
 
-    text_params tp = constructor_text_params(0, 0, NULL, NULL);
-
-    tp.len_buff = count_symbls(file);
+    tp.len_buff = count_symbls(tp.file);
 
     //printf("%zu\n", tp.len_buff);  
 
     tp.buff = (char*) calloc(tp.len_buff, sizeof(char));
 
-    fread(tp.buff, sizeof(char), tp.len_buff, file);
+    fread(tp.buff, sizeof(char), tp.len_buff, tp.file);
 
     tp.quantity_strs = count_strs(tp.buff, tp.len_buff) + 1;
 
@@ -78,18 +81,25 @@ text_params read_from_file()
 
     allocate_arr_of_ptrs(&tp);
 
-    //for(size_t num_of_symb = 0; num_of_symb < tp.quantity_strs; num_of_symb++)
-    //{
-    //    printf("%d\n", tp.arr_of_ptrs_on_strs[num_of_symb]);
-    //}      
-
+   
     return tp;
 }
 
-text_params constructor_text_params(size_t len_buff, size_t quantity_strs, char* buff, char* arr_of_ptrs)
+void print_arr(text_params* tp)
+{ 
+    for(size_t num_of_symb = 0; num_of_symb < tp -> len_buff; num_of_symb++)
+    {
+        //TODO fprintf очень большая функция, есть функция попроще
+        // для вывода одного символа
+        fprintf(stdout, "%c", tp -> buff[num_of_symb]);
+    }     
+} 
+
+text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs, char* buff, char* arr_of_ptrs)
 {
     text_params constructor_params = {};
 
+    constructor_params.file                = name_file;
     constructor_params.len_buff            = len_buff;
     constructor_params.quantity_strs       = quantity_strs;
     constructor_params.buff                = buff;

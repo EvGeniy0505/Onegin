@@ -10,7 +10,9 @@ int main()
 
     print_ptrs(&tp);
 
-    //print_arr(&tp); 
+    printf("\n\n\n\n\n");
+
+    print_arr(&tp); 
 
     destructor_text_params(&tp);
     

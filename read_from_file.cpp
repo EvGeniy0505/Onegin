@@ -3,6 +3,9 @@
 
 #include "read_from_file.h"
 
+#define RESET   "\033[0m"
+#define RED     "\033[1;31m"
+
 size_t count_strs(char* text, size_t len_text)
 {
     size_t quantity_strs = 0;
@@ -86,16 +89,27 @@ text_params read_from_file()
 
 void print_arr(text_params* tp)
 { 
+    printf("\x1B[1;31;40mOriginal text:\x1B[0;30;40m\n");
+
     for(size_t num_of_symb = 0; num_of_symb < tp -> len_buff; num_of_symb++)
     {
         //fprintf(stdout, "%c", tp -> buff[num_of_symb]);
 
-        putchar(tp -> buff[num_of_symb]);
+        if(tp -> buff[num_of_symb] == '\0')
+        {
+            putchar('\n');
+        }
+        else
+        {
+            putchar(tp -> buff[num_of_symb]);
+        }
     }     
 } 
 
 void print_ptrs(text_params* tp)
 { 
+    printf("%s\n", "\x1B[1;31;40mSorted text:\x1B[0;30;40m\n");
+
     for(size_t num_of_ptr = 0; num_of_ptr < tp -> quantity_strs; num_of_ptr++)
     {
         //const char* curSymb = &tp -> arr_of_ptrs_on_strs[num_of_ptr][0];

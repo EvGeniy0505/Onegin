@@ -10,6 +10,8 @@ int main()
 
     print_arr(&tp); 
 
+    //print_ptrs(&tp);
+
     destructor_text_params(&tp);
     
     return 0;

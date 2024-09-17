@@ -58,12 +58,9 @@ FILE* open_file(text_params* tp)
 
 text_params read_from_file()
 {
-    // TODO этот конструктор эквавалентен tp = { file, ...}
-    // а здесь вообще ты его zero-инициализируешь, так что не выёбывайся
-    // и сделай tp = {}
-    text_params tp = constructor_text_params(NULL, 0, 0, NULL, NULL);
-    // TODO open_file тоже устанавливает tp.file, зачем это дважды делать?
-    tp.file = open_file(&tp);
+    text_params tp = {};
+
+    open_file(&tp);
 
     tp.len_buff = count_symbls(tp.file);
 
@@ -89,9 +86,23 @@ void print_arr(text_params* tp)
 { 
     for(size_t num_of_symb = 0; num_of_symb < tp -> len_buff; num_of_symb++)
     {
-        //TODO fprintf очень большая функция, есть функция попроще
-        // для вывода одного символа
-        fprintf(stdout, "%c", tp -> buff[num_of_symb]);
+        //fprintf(stdout, "%c", tp -> buff[num_of_symb]);
+
+        putchar(tp -> buff[num_of_symb]);
+    }     
+} 
+
+void print_ptrs(text_params* tp)
+{ 
+    for(size_t num_of_symb = 0; num_of_symb < tp -> quantity_strs; num_of_symb++)
+    {
+        size_t symb = 0;
+
+        while(symb != '\n')
+        {
+            printf("%c", tp -> arr_of_ptrs_on_strs[symb]);
+            symb++;
+        }
     }     
 } 
 

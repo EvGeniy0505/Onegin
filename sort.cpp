@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <string.h>
+#include <assert.h>
 
 #include "sort.h"
 
@@ -6,21 +8,29 @@
 
 void bubble_sort(text_params* text_p)
 {
-    for(size_t i = 0; i < text_p -> quantity_strs; i++)
-    {
-        for(size_t j = 0; j < text_p -> len_buff; j++)
-        {
-            if(text_p -> buff[j + 1] == '\n')
-            {
-                break;
-            }
+    char* swap = {};
+    int compare = 0;
 
-            if((text_p -> buff[j] > text_p -> buff[j + 1]))
+    for(size_t i = text_p -> quantity_strs - 1; i > 0; i--)   // TODO: тут вопрос
+    {
+        for(size_t j = 0; j < i; j++)
+        {
+            compare = strcmp((text_p -> arr_of_ptrs_on_strs[j]), (text_p -> arr_of_ptrs_on_strs[j + 1]));
+
+            if(compare > 0)
             {
-                char arg = text_p -> arr_of_ptrs_on_strs[i];
-                text_p -> arr_of_ptrs_on_strs[i] = text_p -> arr_of_ptrs_on_strs[i + 1];
-                text_p -> arr_of_ptrs_on_strs[i + 1] = arg;
+                swap = text_p -> arr_of_ptrs_on_strs[j];
+                text_p -> arr_of_ptrs_on_strs[j] = text_p -> arr_of_ptrs_on_strs[j + 1];
+                text_p -> arr_of_ptrs_on_strs[j + 1] = swap;
             }
         }
+
     }
 }
+
+
+//int (*COMPARE) (void* a, void* b)
+//{
+//    const char* real_a = *(const char**)a;
+//    const char* real_b = *(const char**)b;
+//} 

@@ -6,11 +6,11 @@ int main()
 {
     struct text_params tp = read_from_file();
 
-    //bubble_sort(&tp);
+    bubble_sort(&tp);
 
-    print_arr(&tp); 
+    print_ptrs(&tp);
 
-    //print_ptrs(&tp);
+    //print_arr(&tp); 
 
     destructor_text_params(&tp);
     

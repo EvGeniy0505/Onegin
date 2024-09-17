@@ -29,16 +29,18 @@ size_t count_symbls(FILE* all_file)
 
 void allocate_arr_of_ptrs(text_params* str_tp)
 {
-    str_tp -> arr_of_ptrs_on_strs[0] = str_tp -> buff[0];
+    str_tp -> arr_of_ptrs_on_strs[0] = &str_tp -> buff[0];
 
     size_t num_of_ptr = 1;
-    size_t num_of_symb = 0;
 
-    for(num_of_symb = 0; num_of_symb < str_tp -> len_buff; num_of_symb++)
+    for(size_t num_of_symb = 0; num_of_symb < str_tp -> len_buff; num_of_symb++)
     {
         if(str_tp -> buff[num_of_symb] == '\n')
         {
-            str_tp -> arr_of_ptrs_on_strs[num_of_ptr] = str_tp -> buff[num_of_symb + 1];
+            str_tp -> arr_of_ptrs_on_strs[num_of_ptr] = &str_tp -> buff[num_of_symb + 1];
+
+            str_tp -> buff[num_of_symb] = '\0';
+
             num_of_ptr++;
         }
     }        
@@ -74,7 +76,7 @@ text_params read_from_file()
 
     //printf("%zu\n", tp.quantity_strs);   
 
-    tp.arr_of_ptrs_on_strs = (char*) calloc(tp.quantity_strs, sizeof(char*));
+    tp.arr_of_ptrs_on_strs = (char**) calloc(tp.quantity_strs, sizeof(char*));
 
     allocate_arr_of_ptrs(&tp);
 
@@ -94,19 +96,29 @@ void print_arr(text_params* tp)
 
 void print_ptrs(text_params* tp)
 { 
-    for(size_t num_of_symb = 0; num_of_symb < tp -> quantity_strs; num_of_symb++)
+    for(size_t num_of_ptr = 0; num_of_ptr < tp -> quantity_strs; num_of_ptr++)
     {
-        size_t symb = 0;
+        //const char* curSymb = &tp -> arr_of_ptrs_on_strs[num_of_ptr][0];
 
-        while(symb != '\n')
-        {
-            printf("%c", tp -> arr_of_ptrs_on_strs[symb]);
-            symb++;
-        }
+        // size_t symb = 0;
+
+        // char print_symb = tp -> arr_of_ptrs_on_strs[num_of_ptr][symb];
+
+        // while(print_symb != '\n' && print_symb != '\0')
+        // {
+        //     printf("%s", print_symb);
+
+        //     symb++;
+
+        //     print_symb = tp -> arr_of_ptrs_on_strs[num_of_ptr][symb];
+        // }
+        // putchar('\n');
+
+        printf("%s\n", tp -> arr_of_ptrs_on_strs[num_of_ptr]);
     }     
 } 
 
-text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs, char* buff, char* arr_of_ptrs)
+text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs, char* buff, char** arr_of_ptrs)
 {
     text_params constructor_params = {};
 

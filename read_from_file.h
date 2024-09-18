@@ -4,16 +4,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct str
+{
+    char** begin;
+    char** end;
+};
+
 struct text_params
 {
     FILE* file;
     size_t len_buff;
     size_t quantity_strs;
     char* buff;
-    char** arr_of_ptrs_on_strs;
+    str arr_of_ptrs;
 };
-
-
 
 size_t count_symbls(FILE* all_file);
 

@@ -3,8 +3,6 @@
 
 #include "read_from_file.h"
 
-#define RESET   "\033[0m"
-#define RED     "\033[1;31m"
 
 size_t count_strs(char* text, size_t len_text)
 {
@@ -32,7 +30,7 @@ size_t count_symbls(FILE* all_file)
 
 void allocate_arr_of_ptrs(text_params* str_tp)
 {
-    str_tp -> arr_of_ptrs_on_strs[0] = &str_tp -> buff[0];
+    str_tp -> arr_of_ptrs.begin[0] = &str_tp -> buff[0];
 
     size_t num_of_ptr = 1;
 
@@ -40,7 +38,7 @@ void allocate_arr_of_ptrs(text_params* str_tp)
     {
         if(str_tp -> buff[num_of_symb] == '\n')
         {
-            str_tp -> arr_of_ptrs_on_strs[num_of_ptr] = &str_tp -> buff[num_of_symb + 1];
+            str_tp -> arr_of_ptrs.begin[num_of_ptr] = &str_tp -> buff[num_of_symb + 1];
 
             str_tp -> buff[num_of_symb] = '\0';
 
@@ -79,7 +77,7 @@ text_params read_from_file()
 
     //printf("%zu\n", tp.quantity_strs);   
 
-    tp.arr_of_ptrs_on_strs = (char**) calloc(tp.quantity_strs, sizeof(char*));
+    tp.arr_of_ptrs.begin  = (char**) calloc(tp.quantity_strs, sizeof(char*));
 
     allocate_arr_of_ptrs(&tp);
 
@@ -128,19 +126,21 @@ void print_ptrs(text_params* tp)
         // }
         // putchar('\n');
 
-        printf("%s\n", tp -> arr_of_ptrs_on_strs[num_of_ptr]);
+        printf("%s\n", tp -> arr_of_ptrs.begin[num_of_ptr]);
     }     
 } 
 
-text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs, char* buff, char** arr_of_ptrs)
+text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs, char* buff, 
+                                    char** arr_begining_str, char** arr_end_str)
 {
     text_params constructor_params = {};
 
-    constructor_params.file                = name_file;
-    constructor_params.len_buff            = len_buff;
-    constructor_params.quantity_strs       = quantity_strs;
-    constructor_params.buff                = buff;
-    constructor_params.arr_of_ptrs_on_strs = arr_of_ptrs;
+    constructor_params.file              = name_file;
+    constructor_params.len_buff          = len_buff;
+    constructor_params.quantity_strs     = quantity_strs;
+    constructor_params.buff              = buff;
+    constructor_params.arr_of_ptrs.begin = arr_begining_str;
+    constructor_params.arr_of_ptrs.end   = arr_end_str;
 
     return constructor_params;
 }
@@ -148,5 +148,5 @@ text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t qua
 void destructor_text_params(text_params* tp)
 {
     free(tp -> buff);
-    free(tp -> arr_of_ptrs_on_strs);
+    free(tp -> arr_of_ptrs.begin);
 }

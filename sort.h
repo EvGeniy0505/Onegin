@@ -7,8 +7,8 @@
 
 void bubble_sort(text_params* text_p);
 
-//void* q_sort(void* arr_of_ptrs_on_strs, size_t quantity_strs, size_t size, int (*COMPARE) (void* a, void* b));  
+int COMPARE(const void* a, const void* b);
 
-//int (*COMPARE) (void* a, void* b);
+//int strcmp_by_me(const char* str_1, const char* str_2);
 
 #endif

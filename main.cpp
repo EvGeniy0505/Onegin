@@ -6,7 +6,9 @@ int main()
 {
     struct text_params tp = read_from_file();
 
-    //qsort(tp.arr_of_ptrs.begin, tp.quantity_strs, sizeof(char*), COMPARE); 
+    // qsort(tp.arr_of_ptrs, tp.quantity_strs, sizeof(char*), COMPARE); 
+
+    // print_ptrs(&tp);
 
     bubble_sort_back(&tp);
 

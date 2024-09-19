@@ -6,8 +6,8 @@
 
 struct str
 {
-    char** begin;
-    char** end;
+    char* begin;
+    char* end;
 };
 
 struct text_params
@@ -16,7 +16,7 @@ struct text_params
     size_t len_buff;
     size_t quantity_strs;
     char* buff;
-    str arr_of_ptrs;
+    str* arr_of_ptrs;
 };
 
 size_t count_symbls(FILE* all_file);
@@ -33,7 +33,10 @@ void print_arr(text_params* tp);
 
 void print_ptrs(text_params* tp);
 
-text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs, char* buff, char** arr_of_ptrs);
+void print_ptrs_back(text_params* tp);
+
+text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs, 
+                                    char* buff,  char* arr_begining_str, char* arr_end_str);
 
 void destructor_text_params(text_params* tp);
 

@@ -6,13 +6,15 @@ int main()
 {
     struct text_params tp = read_from_file();
 
-    qsort(tp.arr_of_ptrs.begin, tp.quantity_strs, sizeof(char*), COMPARE); 
+    //qsort(tp.arr_of_ptrs.begin, tp.quantity_strs, sizeof(char*), COMPARE); 
 
-    //bubble_sort(&tp);
+    bubble_sort_back(&tp);
+
+    print_ptrs_back(&tp);
+
+    bubble_sort(&tp);
 
     print_ptrs(&tp);
-
-    printf("\n\n\n\n\n");
 
     print_arr(&tp); 
 

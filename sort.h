@@ -5,13 +5,11 @@
 
 
 
-int my_strcmp(const char* str_1, const char* str_2);
+int my_strcmp(str* str_1, str* str_2);
 
-void bubble_sort(text_params* text_p);
+void bubble_sort(text_params* text_p, int comp(str* str_1, str* str_2));
 
-int my_strcmp_back(char* str_1_b, const char* str_2_b, char* str_1_e, const char* str_2_e);
-
-void bubble_sort_back(text_params* text_p);
+int my_strcmp_back(str* str_1, str* str_2);
 
 int COMPARE(const void* a, const void* b);
 

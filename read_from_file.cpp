@@ -3,7 +3,6 @@
 
 #include "read_from_file.h"
 
-// TODO строк на 1 больше, чем \n
 size_t count_strs(char* text, size_t len_text)
 {
     size_t quantity_strs = 0;
@@ -16,8 +15,13 @@ size_t count_strs(char* text, size_t len_text)
         }
     }
 
+    quantity_strs++;
+
     return quantity_strs;
 }
+
+// size_t value_plus_plus(size_t* value); // === a++
+// size_t plus_plus_value(size_t* value); // === ++a
 
 size_t count_symbls(FILE* all_file)
 {
@@ -28,9 +32,7 @@ size_t count_symbls(FILE* all_file)
     return (size_t)st.st_size;
 }
 
-// TODO allocate - это выделение памяти, а тут его не происходит
-// это скорее split lines чё-то такое
-void allocate_arr_of_ptrs(text_params* str_tp)
+void split_lines(text_params* str_tp)
 {
     str_tp -> arr_of_ptrs[0].begin = &str_tp -> buff[0];
 
@@ -64,8 +66,7 @@ FILE* open_file(text_params* tp)
     return tp -> file;
 }
 
-// TODO вот это точно конструктор text_params, а не read_from_file
-text_params read_from_file()
+text_params constructur_text_params()
 {
     text_params tp = {};
 
@@ -73,13 +74,13 @@ text_params read_from_file()
 
     tp.len_buff = count_symbls(tp.file);
 
-    //printf("%zu\n", tp.len_buff);
+    // printf("%zu\n", tp.len_buff);
 
     tp.buff = (char*) calloc(tp.len_buff + 1, sizeof(char));
 
     fread(tp.buff, sizeof(char), tp.len_buff, tp.file);
 
-    tp.quantity_strs = count_strs(tp.buff, tp.len_buff) + 1; //<<< вот эту единичку надо в функции прибавлять
+    tp.quantity_strs = count_strs(tp.buff, tp.len_buff); 
 
     //printf("%zu\n", tp.quantity_strs);
 
@@ -87,7 +88,7 @@ text_params read_from_file()
 
     assert(tp.arr_of_ptrs != NULL);
 
-    allocate_arr_of_ptrs(&tp);
+    split_lines(&tp);
 
     return tp;
 }
@@ -95,6 +96,8 @@ text_params read_from_file()
 void print_arr(text_params* tp)
 {
     // TODO сделай отдельную функцию, которая красит вывод
+    // printf_red("Original text %d", 1);
+    // va_arg list: vprintf();
     printf("\x1B[4;33mOriginal text:\x1B[0;37m\n");
 
     // TODO у тебя строки оканчиваются \0, эффективнее строку сразу печатать, а потом \n писать
@@ -111,23 +114,12 @@ void print_arr(text_params* tp)
             putchar(tp -> buff[num_of_symb]);
         }
     }
+
+    putchar('\n');
 }
 
 void print_ptrs(text_params* tp)
 {
-    printf("%s\n", "\x1B[4;35mSorted text:\x1B[0;37m\n");
-
-    for(size_t num_of_ptr = 0; num_of_ptr < tp -> quantity_strs; num_of_ptr++)
-    {
-        printf("%s\n", tp -> arr_of_ptrs[num_of_ptr].begin);
-    }
-}
-
-// TODO это буквально предыдущая функция
-void print_ptrs_back(text_params* tp)
-{
-    printf("%s\n", "\x1B[4;31mBack sorted text:\x1B[0;37m\n");
-
     for(size_t num_of_ptr = 0; num_of_ptr < tp -> quantity_strs; num_of_ptr++)
     {
         printf("%s\n", tp -> arr_of_ptrs[num_of_ptr].begin);
@@ -137,20 +129,20 @@ void print_ptrs_back(text_params* tp)
 // TODO нахуй ты это написал и не используешь?
 // вообще вот эта функция должна поочерёдно каждое поле проинициализировать,
 // а уже потом всё разом сунуть в структуру и вернуть. Доёб к структуре проекта.
-text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs,
-                                    char* buff,  char* arr_begining_str, char* arr_end_str)
-{
-    text_params constructor_params = {};
+// text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs,
+//                                     char* buff,  char* arr_begining_str, char* arr_end_str)
+// {
+//     text_params constructor_params = {};
 
-    constructor_params.file               = name_file;
-    constructor_params.len_buff           = len_buff;
-    constructor_params.quantity_strs      = quantity_strs;
-    constructor_params.buff               = buff;
-    constructor_params.arr_of_ptrs->begin = arr_begining_str;
-    constructor_params.arr_of_ptrs->end   = arr_end_str;
+//     constructor_params.file               = name_file;
+//     constructor_params.len_buff           = len_buff;
+//     constructor_params.quantity_strs      = quantity_strs;
+//     constructor_params.buff               = buff;
+//     constructor_params.arr_of_ptrs->begin = arr_begining_str;
+//     constructor_params.arr_of_ptrs->end   = arr_end_str;
 
-    return constructor_params;
-}
+//     return constructor_params;
+// }
 
 void destructor_text_params(text_params* tp)
 {

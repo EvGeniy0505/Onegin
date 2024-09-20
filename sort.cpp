@@ -6,79 +6,58 @@
 
 
 
-int my_strcmp(const char* str_1, const char* str_2)
-{
-    while((*str_1 == *str_2)  && *str_1 && *str_2)
-    {
-        str_1++;
-        str_2++;
-
-        if(*str_2 == '\0' && *str_1 == '\0')
-        {
-            return 0;
-        }
-    }
-
-    return *str_1 - *str_2;
-}
-
-void bubble_sort(text_params* text_p)
-{
-    for(size_t i = 0; i < text_p -> quantity_strs; i++)
-    {
-        for(size_t j = 0; j < text_p -> quantity_strs - i - 1; j++)
-        {
-            int compare = my_strcmp((text_p -> arr_of_ptrs[j].begin),
-                                    (text_p -> arr_of_ptrs[j + 1].begin));
-
-            if(compare > 0)
-            {
-                char* swap = text_p -> arr_of_ptrs[j].begin;
-                text_p -> arr_of_ptrs[j].begin = text_p -> arr_of_ptrs[j + 1].begin;
-                text_p -> arr_of_ptrs[j + 1].begin = swap;
-            }
-        }
-
-    }
-}
-
-int my_strcmp_back(char* str_1_b, const char* str_2_b, char* str_1_e, const char* str_2_e)
-{
-    while((*str_1_e == *str_2_e) && *str_1_e && *str_2_e)
-    {
-        str_1_e--;
-        str_2_e--;
-
-        if(*str_2_e == *str_2_b && *str_1_e == *str_1_b)
-        {
-            return 0;
-        }
-    }
-
-    return *str_1_e - *str_2_e;
-}
-
-// TODO удали, bubble_sort должен и так уметь в любой компаратор
-void bubble_sort_back(text_params* text_p)
+void bubble_sort(text_params* text_p, int comp(str* str_1, str* str_2))
 {
     for(size_t i = text_p -> quantity_strs - 1; i > 0; i--)
     {
         for(size_t j = 0; j < i - 1; j++)
         {
-            int compare = my_strcmp_back((text_p -> arr_of_ptrs[j].begin),
-                                         (text_p -> arr_of_ptrs[j + 1].begin),
-                                         (text_p -> arr_of_ptrs[j].end),
-                                         (text_p -> arr_of_ptrs[j + 1].end));
+            str str_1 = text_p -> arr_of_ptrs[j];
+            str str_2 = text_p -> arr_of_ptrs[j + 1];
+
+            int compare = comp(&str_1, &str_2);
 
             if(compare > 0)
             {
-                str swap = text_p -> arr_of_ptrs[j];
-                text_p -> arr_of_ptrs[j] = text_p -> arr_of_ptrs[j + 1];
-                text_p -> arr_of_ptrs[j + 1] = swap;
+                str swap = str_2;
+                str_1 = str_2;
+                str_2 = swap;
             }
         }
 
     }
+}
+
+int my_strcmp(str* str_1, str* str_2)
+{
+    while((*str_1 -> begin == *str_2 -> begin)  && *str_1 -> begin && *str_2 -> begin)
+    {
+        str_1->begin++;
+        str_2->begin++;
+
+        if(*str_2 -> begin == '\0' && *str_1 -> begin == '\0')
+        {
+            return 0;
+        }
+    }
+
+    return *(str_1 -> begin) - *(str_2 -> begin);
+}
+
+int my_strcmp_back(str* str_1, str* str_2)
+{
+    while((*str_1->end == *str_2->end) && *str_1->end && *str_2->end)
+    {
+        str_1->end--;
+        str_2->end--;
+
+        if(*str_2->end == *str_2->begin && *str_1->end == *str_1->begin)
+        {
+            return 0;
+        }
+    }
+
+    return *str_1->end - *str_2->end;
 }
 
 int COMPARE (const void* a, const void* b)

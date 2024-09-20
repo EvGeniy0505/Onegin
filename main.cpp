@@ -4,17 +4,21 @@
 
 int main()
 {
-    struct text_params tp = read_from_file();
+    struct text_params tp = constructur_text_params();
 
     // qsort(tp.arr_of_ptrs, tp.quantity_strs, sizeof(char*), COMPARE);
 
     // print_ptrs(&tp);
 
-    bubble_sort_back(&tp);
+    bubble_sort(&tp, my_strcmp_back);
 
-    print_ptrs_back(&tp);
+    printf("%s\n", "\x1B[4;31mBack sorted text:\x1B[0;37m\n");
 
-    bubble_sort(&tp);
+    print_ptrs(&tp);
+
+    bubble_sort(&tp, my_strcmp);
+
+    printf("%s\n", "\x1B[4;35mSorted text:\x1B[0;37m\n");
 
     print_ptrs(&tp);
 

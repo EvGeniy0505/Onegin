@@ -6,7 +6,7 @@ int main()
 {
     struct text_params tp = read_from_file();
 
-    // qsort(tp.arr_of_ptrs, tp.quantity_strs, sizeof(char*), COMPARE); 
+    // qsort(tp.arr_of_ptrs, tp.quantity_strs, sizeof(char*), COMPARE);
 
     // print_ptrs(&tp);
 
@@ -18,9 +18,9 @@ int main()
 
     print_ptrs(&tp);
 
-    print_arr(&tp); 
+    print_arr(&tp);
 
     destructor_text_params(&tp);
-    
+
     return 0;
 }

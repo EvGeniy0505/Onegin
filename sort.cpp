@@ -24,7 +24,7 @@ int my_strcmp(const char* str_1, const char* str_2)
 
 void bubble_sort(text_params* text_p)
 {
-    for(size_t i = 0; i < text_p -> quantity_strs; i++)   
+    for(size_t i = 0; i < text_p -> quantity_strs; i++)
     {
         for(size_t j = 0; j < text_p -> quantity_strs - i - 1; j++)
         {
@@ -58,9 +58,10 @@ int my_strcmp_back(char* str_1_b, const char* str_2_b, char* str_1_e, const char
     return *str_1_e - *str_2_e;
 }
 
+// TODO удали, bubble_sort должен и так уметь в любой компаратор
 void bubble_sort_back(text_params* text_p)
 {
-    for(size_t i = text_p -> quantity_strs - 1; i > 0; i--)   
+    for(size_t i = text_p -> quantity_strs - 1; i > 0; i--)
     {
         for(size_t j = 0; j < i - 1; j++)
         {
@@ -68,7 +69,7 @@ void bubble_sort_back(text_params* text_p)
                                          (text_p -> arr_of_ptrs[j + 1].begin),
                                          (text_p -> arr_of_ptrs[j].end),
                                          (text_p -> arr_of_ptrs[j + 1].end));
- 
+
             if(compare > 0)
             {
                 str swap = text_p -> arr_of_ptrs[j];
@@ -86,4 +87,4 @@ int COMPARE (const void* a, const void* b)
    const char* real_b = *(const char* const*)b;
 
    return(strcmp(real_a, real_b));
-} 
+}

@@ -3,7 +3,7 @@
 
 #include "read_from_file.h"
 
-
+// TODO строк на 1 больше, чем \n
 size_t count_strs(char* text, size_t len_text)
 {
     size_t quantity_strs = 0;
@@ -28,6 +28,8 @@ size_t count_symbls(FILE* all_file)
     return (size_t)st.st_size;
 }
 
+// TODO allocate - это выделение памяти, а тут его не происходит
+// это скорее split lines чё-то такое
 void allocate_arr_of_ptrs(text_params* str_tp)
 {
     str_tp -> arr_of_ptrs[0].begin = &str_tp -> buff[0];
@@ -46,9 +48,10 @@ void allocate_arr_of_ptrs(text_params* str_tp)
             num_of_ptr++;
         }
 
-    }        
+    }
 }
 
+// TODO assert(tp) не хватает везде
 FILE* open_file(text_params* tp)
 {
     const char* path_to_file = "Mockingbird.txt";
@@ -56,11 +59,12 @@ FILE* open_file(text_params* tp)
     tp -> file = fopen(path_to_file, "r");
 
     assert(tp -> file != NULL);
-    assert(ferror(tp -> file) == 0);
+    assert(ferror(tp -> file) == 0); // красава!
 
     return tp -> file;
 }
 
+// TODO вот это точно конструктор text_params, а не read_from_file
 text_params read_from_file()
 {
     text_params tp = {};
@@ -69,15 +73,15 @@ text_params read_from_file()
 
     tp.len_buff = count_symbls(tp.file);
 
-    //printf("%zu\n", tp.len_buff);  
+    //printf("%zu\n", tp.len_buff);
 
     tp.buff = (char*) calloc(tp.len_buff + 1, sizeof(char));
 
     fread(tp.buff, sizeof(char), tp.len_buff, tp.file);
 
-    tp.quantity_strs = count_strs(tp.buff, tp.len_buff) + 1;
+    tp.quantity_strs = count_strs(tp.buff, tp.len_buff) + 1; //<<< вот эту единичку надо в функции прибавлять
 
-    //printf("%zu\n", tp.quantity_strs);   
+    //printf("%zu\n", tp.quantity_strs);
 
     tp.arr_of_ptrs = (str*) calloc(tp.quantity_strs, sizeof(str));
 
@@ -89,9 +93,11 @@ text_params read_from_file()
 }
 
 void print_arr(text_params* tp)
-{ 
+{
+    // TODO сделай отдельную функцию, которая красит вывод
     printf("\x1B[4;33mOriginal text:\x1B[0;37m\n");
 
+    // TODO у тебя строки оканчиваются \0, эффективнее строку сразу печатать, а потом \n писать
     for(size_t num_of_symb = 0; num_of_symb < tp -> len_buff; num_of_symb++)
     {
         //fprintf(stdout, "%c", tp -> buff[num_of_symb]);
@@ -104,30 +110,34 @@ void print_arr(text_params* tp)
         {
             putchar(tp -> buff[num_of_symb]);
         }
-    }     
-} 
+    }
+}
 
 void print_ptrs(text_params* tp)
-{ 
+{
     printf("%s\n", "\x1B[4;35mSorted text:\x1B[0;37m\n");
 
     for(size_t num_of_ptr = 0; num_of_ptr < tp -> quantity_strs; num_of_ptr++)
     {
         printf("%s\n", tp -> arr_of_ptrs[num_of_ptr].begin);
-    }     
-} 
+    }
+}
 
+// TODO это буквально предыдущая функция
 void print_ptrs_back(text_params* tp)
-{ 
+{
     printf("%s\n", "\x1B[4;31mBack sorted text:\x1B[0;37m\n");
 
     for(size_t num_of_ptr = 0; num_of_ptr < tp -> quantity_strs; num_of_ptr++)
     {
         printf("%s\n", tp -> arr_of_ptrs[num_of_ptr].begin);
-    }     
-} 
+    }
+}
 
-text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs, 
+// TODO нахуй ты это написал и не используешь?
+// вообще вот эта функция должна поочерёдно каждое поле проинициализировать,
+// а уже потом всё разом сунуть в структуру и вернуть. Доёб к структуре проекта.
+text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs,
                                     char* buff,  char* arr_begining_str, char* arr_end_str)
 {
     text_params constructor_params = {};

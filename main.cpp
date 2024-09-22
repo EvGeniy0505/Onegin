@@ -1,7 +1,6 @@
 #include "read_from_file.h"
 #include "sort.h"
 
-
 int main()
 {
     struct text_params tp = constructur_text_params();
@@ -12,13 +11,13 @@ int main()
 
     bubble_sort(&tp, my_strcmp_back);
 
-    printf("%s\n", "\x1B[4;31mBack sorted text:\x1B[0;37m\n");
+    color_printf(stdout, "Back sort:\n", RED);
 
     print_ptrs(&tp);
 
     bubble_sort(&tp, my_strcmp);
 
-    printf("%s\n", "\x1B[4;35mSorted text:\x1B[0;37m\n");
+    color_printf(stdout, "Sort text:\n", PURPLE);
 
     print_ptrs(&tp);
 

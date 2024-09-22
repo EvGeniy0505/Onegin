@@ -4,6 +4,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+enum text_colors
+{
+    BLACK = 30,
+    RED,
+    GREEN,
+    YELLOW,
+    BLUE,
+    PURPLE,
+    LIGHT_BLUE,
+    WHITE
+};
+
 struct str
 {
     char* begin;
@@ -29,12 +41,11 @@ text_params constructur_text_params();
 
 FILE* open_file(text_params* tp);
 
+void color_printf(FILE* stream, const char* text, int color);
+
 void print_arr(text_params* tp);
 
 void print_ptrs(text_params* tp);
-
-// text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs, 
-//                                     char* buff,  char* arr_begining_str, char* arr_end_str);
 
 void destructor_text_params(text_params* tp);
 

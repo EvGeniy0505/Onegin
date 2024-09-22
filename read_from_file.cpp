@@ -1,10 +1,13 @@
 #include <sys/stat.h>
 #include <assert.h>
+#include <stdarg.h>
 
 #include "read_from_file.h"
 
 size_t count_strs(char* text, size_t len_text)
 {
+
+    assert (text);
     size_t quantity_strs = 0;
 
     for(size_t i = 0; i < len_text; i++)
@@ -13,6 +16,10 @@ size_t count_strs(char* text, size_t len_text)
         {
             quantity_strs++;
         }
+        // if(text[i + 1] == '\n') // TODO: убрать нахуй все пустые строки
+        // {
+        //     quantity_strs--;
+        // }
     }
 
     quantity_strs++;
@@ -25,6 +32,8 @@ size_t count_strs(char* text, size_t len_text)
 
 size_t count_symbls(FILE* all_file)
 {
+    assert(all_file);
+
     struct stat st;
 
     fstat(fileno(all_file), &st);
@@ -32,20 +41,22 @@ size_t count_symbls(FILE* all_file)
     return (size_t)st.st_size;
 }
 
-void split_lines(text_params* str_tp)
+void split_lines(text_params* tp)
 {
-    str_tp -> arr_of_ptrs[0].begin = &str_tp -> buff[0];
+    assert(tp);
+
+    tp -> arr_of_ptrs[0].begin = &tp -> buff[0];
 
     size_t num_of_ptr = 1;
 
-    for(size_t num_of_symb = 0; num_of_symb < str_tp -> len_buff; num_of_symb++)
+    for(size_t num_of_symb = 0; num_of_symb < tp -> len_buff; num_of_symb++)
     {
-        if(str_tp -> buff[num_of_symb] == '\n')
+        if(tp -> buff[num_of_symb] == '\n')
         {
-            str_tp -> arr_of_ptrs[num_of_ptr].begin   = &str_tp -> buff[num_of_symb + 1];
-            str_tp -> arr_of_ptrs[num_of_ptr - 1].end = &str_tp -> buff[num_of_symb - 1];
+            tp -> arr_of_ptrs[num_of_ptr].begin   = &tp -> buff[num_of_symb + 1];
+            tp -> arr_of_ptrs[num_of_ptr - 1].end = &tp -> buff[num_of_symb - 1];
 
-            str_tp -> buff[num_of_symb] = '\0';
+            tp -> buff[num_of_symb] = '\0';
 
             num_of_ptr++;
         }
@@ -53,14 +64,15 @@ void split_lines(text_params* str_tp)
     }
 }
 
-// TODO assert(tp) не хватает везде
 FILE* open_file(text_params* tp)
 {
+    assert(tp);
+
     const char* path_to_file = "Mockingbird.txt";
 
     tp -> file = fopen(path_to_file, "r");
 
-    assert(tp -> file != NULL);
+    assert(tp -> file);
     assert(ferror(tp -> file) == 0); // красава!
 
     return tp -> file;
@@ -93,17 +105,26 @@ text_params constructur_text_params()
     return tp;
 }
 
+void color_printf(FILE* stream, const char* text, int color)
+{
+    fprintf(stream, "\x1B[4;%dm%s\x1B[0;%dm", color, text, WHITE);
+}
+
 void print_arr(text_params* tp)
 {
-    // TODO сделай отдельную функцию, которая красит вывод
-    // printf_red("Original text %d", 1);
     // va_arg list: vprintf();
-    printf("\x1B[4;33mOriginal text:\x1B[0;37m\n");
+    color_printf(stdout, "Original text:\n", YELLOW);
+
+    // size_t count_1 = 0;
+    // size_t count_2 = 0;
 
     // TODO у тебя строки оканчиваются \0, эффективнее строку сразу печатать, а потом \n писать
-    for(size_t num_of_symb = 0; num_of_symb < tp -> len_buff; num_of_symb++)
+    for(size_t num_of_symb = 0; num_of_symb < tp -> quantity_strs; num_of_symb++)
     {
-        //fprintf(stdout, "%c", tp -> buff[num_of_symb]);
+        // count_1 = count_1 + count_2;
+
+        // fprintf(stdout, "%s%ln\n", &tp -> buff[count_1], &count_2);
+
 
         if(tp -> buff[num_of_symb] == '\0')
         {
@@ -125,24 +146,6 @@ void print_ptrs(text_params* tp)
         printf("%s\n", tp -> arr_of_ptrs[num_of_ptr].begin);
     }
 }
-
-// TODO нахуй ты это написал и не используешь?
-// вообще вот эта функция должна поочерёдно каждое поле проинициализировать,
-// а уже потом всё разом сунуть в структуру и вернуть. Доёб к структуре проекта.
-// text_params constructor_text_params(FILE* name_file, size_t len_buff, size_t quantity_strs,
-//                                     char* buff,  char* arr_begining_str, char* arr_end_str)
-// {
-//     text_params constructor_params = {};
-
-//     constructor_params.file               = name_file;
-//     constructor_params.len_buff           = len_buff;
-//     constructor_params.quantity_strs      = quantity_strs;
-//     constructor_params.buff               = buff;
-//     constructor_params.arr_of_ptrs->begin = arr_begining_str;
-//     constructor_params.arr_of_ptrs->end   = arr_end_str;
-
-//     return constructor_params;
-// }
 
 void destructor_text_params(text_params* tp)
 {

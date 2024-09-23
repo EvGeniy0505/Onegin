@@ -16,7 +16,7 @@ size_t count_strs(char* text, size_t len_text)
         {
             quantity_strs++;
         }
-        // if(text[i + 1] == '\n') // TODO: убрать нахуй все пустые строки
+        // if(text[i + 1] == '\n') // TODO: надо бы убрать нахуй все пустые строки
         // {
         //     quantity_strs--;
         // }
@@ -60,8 +60,8 @@ void split_lines(text_params* tp)
 
             num_of_ptr++;
         }
-
     }
+    tp -> arr_of_ptrs[num_of_ptr - 1].end = &tp -> buff[tp -> len_buff];
 }
 
 FILE* open_file(text_params* tp)

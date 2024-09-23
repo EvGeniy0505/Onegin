@@ -8,7 +8,7 @@
 
 void bubble_sort(text_params* text_p, int comp(const str* str_1, const str* str_2))
 {
-    for(size_t i = text_p -> quantity_strs - 1; i > 0; i--)  // хуево работает
+    for(size_t i = text_p -> quantity_strs; i > 0; i--)
     {
         for(size_t j = 0; j < i - 1; j++)
         {

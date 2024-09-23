@@ -61,7 +61,7 @@ void split_lines(text_params* tp)
             num_of_ptr++;
         }
     }
-    tp -> arr_of_ptrs[num_of_ptr - 1].end = &tp -> buff[tp -> len_buff];
+    tp -> arr_of_ptrs[num_of_ptr - 1].end = &tp -> buff[tp -> len_buff - 1];
 }
 
 FILE* open_file(text_params* tp)

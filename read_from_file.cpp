@@ -115,28 +115,15 @@ void print_arr(text_params* tp)
     // va_arg list: vprintf();
     color_printf(stdout, "Original text:\n", YELLOW);
 
-    // size_t count_1 = 0;
-    // size_t count_2 = 0;
+    int count_1 = 0;
+    int count_2 = 0; 
 
-    // TODO у тебя строки оканчиваются \0, эффективнее строку сразу печатать, а потом \n писать
     for(size_t num_of_symb = 0; num_of_symb < tp -> quantity_strs; num_of_symb++)
     {
-        // count_1 = count_1 + count_2;
+        fprintf(stdout, "%s%n\n", &tp -> buff[count_1], &count_2);
 
-        // fprintf(stdout, "%s%ln\n", &tp -> buff[count_1], &count_2);
-
-
-        if(tp -> buff[num_of_symb] == '\0')
-        {
-            putchar('\n');
-        }
-        else
-        {
-            putchar(tp -> buff[num_of_symb]);
-        }
+        count_1 = count_1 + count_2 + 1;
     }
-
-    putchar('\n');
 }
 
 void print_ptrs(text_params* tp)

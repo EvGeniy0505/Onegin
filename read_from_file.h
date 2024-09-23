@@ -41,7 +41,7 @@ text_params constructur_text_params();
 
 FILE* open_file(text_params* tp);
 
-void color_printf(FILE* stream, const char* text, int color);
+void color_printf(FILE* stream, int color, const char* format, ...);
 
 void print_arr(text_params* tp);
 

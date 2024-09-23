@@ -11,6 +11,6 @@ int my_strcmp(const str* str_1, const str* str_2);
 
 int my_strcmp_back(const str* str_1, const str* str_2);
 
-int COMPARE(const void* a, const void* b);
+int QSORT_COMPARE(const void* a, const void* b);
 
 #endif

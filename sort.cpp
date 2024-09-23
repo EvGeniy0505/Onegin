@@ -38,7 +38,7 @@ int my_strcmp(const str* str_1, const str* str_2)
         string_1++;
         string_2++;
 
-        if(*string_2 == '\0' && *string_1 == '\0')  // интересный момент
+        if(*string_2 == '\0' && *string_1 == '\0')  
         {
             return 0;
         }
@@ -68,10 +68,7 @@ int my_strcmp_back(const str* str_1, const str* str_2)
     return *str_1 -> end - *str_2 -> end;
 }
 
-// int COMPARE (const str* a, const str* b)
-// {
-//    const char* real_a = *(const char* const*)a;
-//    const char* real_b = *(const char* const*)b;
-
-//    return(strcmp(real_a, real_b));
-// }
+int QSORT_COMPARE (const void* a, const void* b)
+{
+   return(my_strcmp((const str*)a, (const str*)b));
+}

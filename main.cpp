@@ -5,19 +5,21 @@ int main()
 {
     struct text_params tp = constructur_text_params();
 
-    // qsort(tp.arr_of_ptrs, tp.quantity_strs, sizeof(char*), COMPARE);
+    qsort(tp.arr_of_ptrs, tp.quantity_strs, sizeof(*tp.arr_of_ptrs), QSORT_COMPARE);
 
-    // print_ptrs(&tp);
+    color_printf(stdout, GREEN, "Sort text:\n");
+
+    print_ptrs(&tp);
 
     bubble_sort(&tp, my_strcmp_back);
 
-    color_printf(stdout, "Back sort:\n", RED);
+    color_printf(stdout, RED, "Back sort:\n");
 
     print_ptrs(&tp);
 
     bubble_sort(&tp, my_strcmp);
 
-    color_printf(stdout, "Sort text:\n", PURPLE);
+    color_printf(stdout, PURPLE, "Sort text:\n");
 
     print_ptrs(&tp);
 

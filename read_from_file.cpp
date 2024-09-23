@@ -27,6 +27,8 @@ size_t count_strs(char* text, size_t len_text)
     return quantity_strs;
 }
 
+
+
 // size_t value_plus_plus(size_t* value); // === a++
 // size_t plus_plus_value(size_t* value); // === ++a
 
@@ -105,15 +107,24 @@ text_params constructur_text_params()
     return tp;
 }
 
-void color_printf(FILE* stream, const char* text, int color)
+void color_printf(FILE* stream, int color, const char* format, ...)
 {
-    fprintf(stream, "\x1B[4;%dm%s\x1B[0;%dm", color, text, WHITE);
+    va_list args;
+
+    va_start(args, format);
+
+    fprintf(stream, "\x1B[4;%dm", color);
+
+    vfprintf(stream, format, args);
+
+    fprintf(stream, "\x1B[0;%dm", WHITE);
+
+    va_end(args);
 }
 
 void print_arr(text_params* tp)
 {
-    // va_arg list: vprintf();
-    color_printf(stdout, "Original text:\n", YELLOW);
+    color_printf(stdout, YELLOW, "Original text:\n");
 
     int count_1 = 0;
     int count_2 = 0; 

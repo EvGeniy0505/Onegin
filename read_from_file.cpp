@@ -16,18 +16,12 @@ size_t count_strs(char* text, size_t len_text)
         {
             quantity_strs++;
         }
-        // if(text[i + 1] == '\n') // TODO: надо бы убрать нахуй все пустые строки
-        // {
-        //     quantity_strs--;
-        // }
     }
 
     quantity_strs++;
 
     return quantity_strs;
 }
-
-
 
 // size_t value_plus_plus(size_t* value); // === a++
 // size_t plus_plus_value(size_t* value); // === ++a
@@ -113,7 +107,7 @@ void color_printf(FILE* stream, int color, const char* format, ...)
 
     va_start(args, format);
 
-    fprintf(stream, "\x1B[4;%dm", color);
+    fprintf(stream, "\x1B[7;%dm", color);
 
     vfprintf(stream, format, args);
 
@@ -139,7 +133,14 @@ void print_arr(text_params* tp)
 
 void print_ptrs(text_params* tp)
 {
-    for(size_t num_of_ptr = 0; num_of_ptr < tp -> quantity_strs; num_of_ptr++)
+    size_t num_of_ptr = 0;
+
+    while(tp -> arr_of_ptrs[num_of_ptr].begin[0] == '\0')
+    {
+        num_of_ptr++;
+    }
+
+    for(; num_of_ptr < tp -> quantity_strs; num_of_ptr++)
     {
         printf("%s\n", tp -> arr_of_ptrs[num_of_ptr].begin);
     }

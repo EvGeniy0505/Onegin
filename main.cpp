@@ -11,11 +11,15 @@ int main()
 
     print_ptrs(&tp);
 
+    printf("\n\n\n");
+
     bubble_sort(&tp, my_strcmp_back);
 
     color_printf(stdout, RED, "Back sort:\n");
 
     print_ptrs(&tp);
+
+    printf("\n\n\n");
 
     bubble_sort(&tp, my_strcmp);
 
@@ -23,9 +27,13 @@ int main()
 
     print_ptrs(&tp);
 
+    printf("\n\n\n");
+
     print_arr(&tp);
 
     destructor_text_params(&tp);
+
+    color_printf(stdout, PURPLE, "%d %s %i\n", 52, "polina solnishko", 57);
 
     return 0;
 }

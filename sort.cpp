@@ -4,7 +4,7 @@
 
 #include "sort.h"
 
-
+typedef int QCOMPARE(const void* a, const void* b);
 
 void bubble_sort(text_params* text_p, int comp(const str* str_1, const str* str_2))
 {
@@ -73,7 +73,7 @@ int QSORT_COMPARE (const void* a, const void* b)
    return(my_strcmp((const str*)a, (const str*)b));
 }
 
-void my_qsort(void* sort_system, size_t elements, size_t size, int COMPARE(const void* a, const void* b))
+void my_qsort(void* sort_system, size_t elements, size_t size, QCOMPARE cmp)
 {
     void* pivot = (sort_system + size * (rand() % (elements)));
 
@@ -82,12 +82,12 @@ void my_qsort(void* sort_system, size_t elements, size_t size, int COMPARE(const
 
     do
     {
-        while(COMPARE((sort_system + ptr_1 * size), pivot) < 0)
+        while(cmp((sort_system + ptr_1 * size), pivot) < 0)
         {
             ptr_1++;
         }
 
-        while(COMPARE((sort_system + ptr_2 * size), pivot) > 0)
+        while(cmp((sort_system + ptr_2 * size), pivot) > 0)
         {
             ptr_2--;
         }
@@ -104,11 +104,11 @@ void my_qsort(void* sort_system, size_t elements, size_t size, int COMPARE(const
 
     if(ptr_2 > 0)
     {
-        my_qsort(sort_system, ptr_2 + 1 , size, COMPARE);
+        my_qsort(sort_system, ptr_2 + 1 , size, cmp);
     }
-    if(ptr_1 < elements)
+    if(ptr_1 < elements - 1)
     {
-        my_qsort(sort_system + ptr_1 * size, elements - ptr_1, size, COMPARE);
+        my_qsort(sort_system + ptr_1 * size, elements - ptr_1, size, cmp);
     }
 }
 

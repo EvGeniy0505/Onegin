@@ -4,6 +4,8 @@
 
 int QSORT_COMPARE (const void* a, const void* b);
 
+int IntCompare(const void* a, const void* b);
+
 void my_qsort(void* sort_system, size_t elements, size_t size, int COMPARE(const void* a, const void* b));
 
 void byte_swap(void* a, void* b, size_t size);
@@ -12,18 +14,23 @@ int main()
 {
     int len_arr = 8;
 
-    const char* arr[len_arr] = {"femkms", "dlekwme", "fkemfdlces", "amdwmd", "wkldsm", "wkcdcss", "2,sa", "o"};
+    int arr[len_arr] = {2, 12, 3, 32, 35, -4, 1, 2};
 
-    my_qsort(arr, len_arr, sizeof(*arr), QSORT_COMPARE);
+    my_qsort(arr, len_arr, sizeof(*arr), IntCompare);
 
     for(size_t i = 0; i < len_arr; i++)
     {
-        printf("%s\n", arr[i]);
+        printf("%d\n", arr[i]);
     }
 
     putchar('\n');
 
     return 0;
+}
+
+int IntCompare(const void* a, const void* b)
+{
+    return *(int*)a - *(int*)b;
 }
 
 int QSORT_COMPARE (const void* a, const void* b)
@@ -64,7 +71,7 @@ void my_qsort(void* sort_system, size_t elements, size_t size, int COMPARE(const
     {
         my_qsort(sort_system, ptr_2 + 1 , size, COMPARE);
     }
-    if(ptr_1 < elements)
+    if(ptr_1 < elements - 1)
     {
         my_qsort(sort_system + ptr_1 * size, elements - ptr_1, size, COMPARE);
     }

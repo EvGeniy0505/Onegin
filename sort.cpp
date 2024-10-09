@@ -30,7 +30,7 @@ void bubble_sort(text_params* text_p, int comp(const str* str_1, const str* str_
 
 int my_strcmp(const str* str_1, const str* str_2)
 {
-    const char* string_1 = str_1 -> begin; 
+    const char* string_1 = str_1 -> begin;
     const char* string_2 = str_2 -> begin;
 
     while((*string_1 == *string_2)  && *string_1 && *string_2)
@@ -38,7 +38,7 @@ int my_strcmp(const str* str_1, const str* str_2)
         string_1++;
         string_2++;
 
-        if(*string_2 == '\0' && *string_1 == '\0')  
+        if(*string_2 == '\0' && *string_1 == '\0')
         {
             return 0;
         }
@@ -49,9 +49,9 @@ int my_strcmp(const str* str_1, const str* str_2)
 
 int my_strcmp_back(const str* str_1, const str* str_2)
 {
-    const char* string_1_b = str_1 -> begin; 
+    const char* string_1_b = str_1 -> begin;
     const char* string_2_b = str_2 -> begin;
-    const char* string_1_e = str_1 -> end; 
+    const char* string_1_e = str_1 -> end;
     const char* string_2_e = str_2 -> end;
 
     while((*string_1_e == *string_2_e) && *string_1_e && *string_2_e)
@@ -71,4 +71,56 @@ int my_strcmp_back(const str* str_1, const str* str_2)
 int QSORT_COMPARE (const void* a, const void* b)
 {
    return(my_strcmp((const str*)a, (const str*)b));
+}
+
+void my_qsort(void* sort_system, size_t elements, size_t size, int COMPARE(const void* a, const void* b))
+{
+    void* pivot = (sort_system + size * (rand() % (elements)));
+
+    int ptr_1 = 0;
+    int ptr_2 = elements - 1;
+
+    do
+    {
+        while(COMPARE((sort_system + ptr_1 * size), pivot) < 0)
+        {
+            ptr_1++;
+        }
+
+        while(COMPARE((sort_system + ptr_2 * size), pivot) > 0)
+        {
+            ptr_2--;
+        }
+
+        if(ptr_1 <= ptr_2)
+        {
+            byte_swap(sort_system + ptr_1 * size, sort_system + ptr_2 * size, size);
+
+            ptr_1++;
+            ptr_2--;
+        }
+
+    }while(ptr_1 <= ptr_2);
+
+    if(ptr_2 > 0)
+    {
+        my_qsort(sort_system, ptr_2 + 1 , size, COMPARE);
+    }
+    if(ptr_1 < elements)
+    {
+        my_qsort(sort_system + ptr_1 * size, elements - ptr_1, size, COMPARE);
+    }
+}
+
+void byte_swap(void* a, void* b, size_t size)
+{
+    char* a_real = (char*) a;
+    char* b_real = (char*) b;
+
+    for(int i = 0; i < size; i++)
+    {
+        char symb = a_real[i];
+        a_real[i] = b_real[i];
+        b_real[i] = symb;
+    }
 }

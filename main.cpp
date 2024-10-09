@@ -5,9 +5,15 @@ int main()
 {
     struct text_params tp = constructur_text_params();
 
-    qsort(tp.arr_of_ptrs, tp.quantity_strs, sizeof(*tp.arr_of_ptrs), QSORT_COMPARE);
+    color_printf(stdout, GREEN, "My qsort text:\n");
 
-    color_printf(stdout, GREEN, "Sort text:\n");
+    my_qsort(tp.arr_of_ptrs, tp.quantity_strs, sizeof(*tp.arr_of_ptrs), QSORT_COMPARE);
+
+    print_ptrs(&tp);
+
+    color_printf(stdout, GREEN, "Program qsort text:\n");
+
+    qsort(tp.arr_of_ptrs, tp.quantity_strs, sizeof(*tp.arr_of_ptrs), QSORT_COMPARE);
 
     print_ptrs(&tp);
 

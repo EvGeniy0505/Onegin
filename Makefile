@@ -13,4 +13,4 @@ read_from_file.o: read_from_file.cpp
 	@g++ -c read_from_file.cpp $(flags)
 
 clean:
-	rm *.o onegin
+	rm *.o onegin text_in_file.txt

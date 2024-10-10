@@ -73,42 +73,58 @@ int QSORT_COMPARE (const void* a, const void* b)
    return(my_strcmp((const str*)a, (const str*)b));
 }
 
-void my_qsort(void* sort_system, size_t elements, size_t size, QCOMPARE cmp)
+void my_qsort(void* sort_system, size_t elements, size_t size, int COMPARE(const void* a, const void* b))
 {
-    void* pivot = (sort_system + size * (rand() % (elements)));
+    if(elements < 1)
+        return;
 
-    int ptr_1 = 0;
-    int ptr_2 = elements - 1;
+    void* pivot_candidate = (sort_system + size * (rand() % (elements)));
+
+    byte_swap(pivot_candidate, sort_system, size);
+
+    void* pivot = sort_system;
+
+    size_t ptr_1 = 1;
+    size_t ptr_2 = elements - 1;
 
     do
     {
-        while(cmp((sort_system + ptr_1 * size), pivot) < 0)
+        while(ptr_1 < ptr_2 && COMPARE((sort_system + ptr_1 * size), sort_system) < 0)
         {
             ptr_1++;
         }
 
-        while(cmp((sort_system + ptr_2 * size), pivot) > 0)
+        while(ptr_2 > ptr_1 && COMPARE((sort_system + ptr_2 * size), sort_system) > 0)
         {
             ptr_2--;
         }
 
-        if(ptr_1 <= ptr_2)
+        if(ptr_1 < ptr_2)
         {
             byte_swap(sort_system + ptr_1 * size, sort_system + ptr_2 * size, size);
 
             ptr_1++;
-            ptr_2--;
         }
 
-    }while(ptr_1 <= ptr_2);
+    } while(ptr_1 < ptr_2);
+
+
+    if(COMPARE((sort_system + ptr_1 * size), pivot) > 0)
+    {
+        byte_swap(sort_system + ptr_1 * size - size, pivot, size);
+    }
+    else
+    {
+        byte_swap(sort_system + ptr_1 * size, pivot, size);
+    }
 
     if(ptr_2 > 0)
     {
-        my_qsort(sort_system, ptr_2 + 1 , size, cmp);
+        my_qsort(sort_system, ptr_2 , size, COMPARE);
     }
     if(ptr_1 < elements - 1)
     {
-        my_qsort(sort_system + ptr_1 * size, elements - ptr_1, size, cmp);
+        my_qsort(sort_system + ptr_1 * size, elements - ptr_1, size, COMPARE);
     }
 }
 

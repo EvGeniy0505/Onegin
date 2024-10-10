@@ -43,9 +43,9 @@ FILE* open_file(text_params* tp);
 
 void color_printf(FILE* stream, int color, const char* format, ...);
 
-void print_arr(text_params* tp);
+void print_arr(text_params* tp, FILE* text);
 
-void print_ptrs(text_params* tp);
+void print_ptrs(text_params* tp, FILE* text);
 
 void destructor_text_params(text_params* tp);
 

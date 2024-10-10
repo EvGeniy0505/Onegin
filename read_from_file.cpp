@@ -1,6 +1,7 @@
 #include <sys/stat.h>
 #include <assert.h>
 #include <stdarg.h>
+#include <unistd.h>
 
 #include "read_from_file.h"
 
@@ -88,7 +89,7 @@ text_params constructur_text_params()
 
     fread(tp.buff, sizeof(char), tp.len_buff, tp.file);
 
-    tp.quantity_strs = count_strs(tp.buff, tp.len_buff); 
+    tp.quantity_strs = count_strs(tp.buff, tp.len_buff);
 
     //printf("%zu\n", tp.quantity_strs);
 
@@ -107,31 +108,38 @@ void color_printf(FILE* stream, int color, const char* format, ...)
 
     va_start(args, format);
 
-    fprintf(stream, "\x1B[7;%dm", color);
+    if(isatty(fileno(stream)) == 1)
+    {
+        fprintf(stream, "\x1B[7;%dm", color);
 
-    vfprintf(stream, format, args);
+        vfprintf(stream, format, args);
 
-    fprintf(stream, "\x1B[0;%dm", WHITE);
+        fprintf(stream, "\x1B[0;%dm", WHITE);
+    }
+    else
+    {
+        vfprintf(stream, format, args);
+    }
 
     va_end(args);
 }
 
-void print_arr(text_params* tp)
+void print_arr(text_params* tp, FILE* text)
 {
-    color_printf(stdout, YELLOW, "Original text:\n");
+    color_printf(text, YELLOW, "Original text:\n");
 
     int count_1 = 0;
-    int count_2 = 0; 
+    int count_2 = 0;
 
     for(size_t num_of_symb = 0; num_of_symb < tp -> quantity_strs; num_of_symb++)
     {
-        fprintf(stdout, "%s%n\n", &tp -> buff[count_1], &count_2);
+        fprintf(text, "%s%n\n", &tp -> buff[count_1], &count_2);
 
         count_1 = count_1 + count_2 + 1;
     }
 }
 
-void print_ptrs(text_params* tp)
+void print_ptrs(text_params* tp, FILE* text)
 {
     size_t num_of_ptr = 0;
 
@@ -142,7 +150,7 @@ void print_ptrs(text_params* tp)
 
     for(; num_of_ptr < tp -> quantity_strs; num_of_ptr++)
     {
-        printf("%s\n", tp -> arr_of_ptrs[num_of_ptr].begin);
+        fprintf(text, "%s\n", tp -> arr_of_ptrs[num_of_ptr].begin);
     }
 }
 

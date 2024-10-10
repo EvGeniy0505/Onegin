@@ -65,7 +65,7 @@ FILE* open_file(text_params* tp)
 {
     assert(tp);
 
-    const char* path_to_file = "Mockingbird.txt";
+    const char* path_to_file = "program_asm.txt";
 
     tp -> file = fopen(path_to_file, "r");
 

@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
-project(STACK CXX)
+project(FILE_READ CXX)
 
-set(LIB_SOURCES "read_from_file.cpp")
-set(TEST_SOURCES "main.cpp" "sort.cpp")
+set(FILE_READ_LIB "read_from_file.cpp")
+set(FILE_READ_TEST "main.cpp" "sort.cpp")
 
-add_library(stack STATIC ${LIB_SOURCES})
+add_library(file_read STATIC ${FILE_READ_LIB})
 
-add_executable(test_stack ${TEST_SOURCES})
-target_link_libraries(test_stack stack)
+add_executable(test_file_read ${FILE_READ_TEST})
+target_link_libraries(test_file_read file_read)

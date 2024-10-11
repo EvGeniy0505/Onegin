@@ -37,9 +37,9 @@ size_t count_strs(char* text, size_t len_text);
 
 void split_lines(text_params* str_tp);
 
-text_params constructur_text_params();
+text_params constructur_text_params(const char* file_path);
 
-FILE* open_file(text_params* tp);
+FILE* open_file(text_params* tp, const char* file_path);
 
 void color_printf(FILE* stream, int color, const char* format, ...);
 

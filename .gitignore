@@ -2,3 +2,9 @@
 *.o
 onegin
 a
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles/
+libfile_read.a
+test_file_read
+Makefile

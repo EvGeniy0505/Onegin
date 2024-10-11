@@ -78,30 +78,32 @@ void my_qsort(void* sort_system, size_t elements, size_t size, int COMPARE(const
     if(elements < 1)
         return;
 
-    void* pivot_candidate = (sort_system + size * (rand() % (elements)));
+    char* new_sort_system = (char*) new_sort_system;
 
-    byte_swap(pivot_candidate, sort_system, size);
+    void* pivot_candidate = (new_sort_system + size * (rand() % (elements)));
 
-    void* pivot = sort_system;
+    byte_swap(pivot_candidate, new_sort_system, size);
+
+    void* pivot = new_sort_system;
 
     size_t ptr_1 = 1;
     size_t ptr_2 = elements - 1;
 
     do
     {
-        while(ptr_1 < ptr_2 && COMPARE((sort_system + ptr_1 * size), sort_system) < 0)
+        while(ptr_1 < ptr_2 && COMPARE((new_sort_system + ptr_1 * size), new_sort_system) < 0)
         {
             ptr_1++;
         }
 
-        while(ptr_2 > ptr_1 && COMPARE((sort_system + ptr_2 * size), sort_system) > 0)
+        while(ptr_2 > ptr_1 && COMPARE((new_sort_system + ptr_2 * size), new_sort_system) > 0)
         {
             ptr_2--;
         }
 
         if(ptr_1 < ptr_2)
         {
-            byte_swap(sort_system + ptr_1 * size, sort_system + ptr_2 * size, size);
+            byte_swap(new_sort_system + ptr_1 * size, new_sort_system + ptr_2 * size, size);
 
             ptr_1++;
         }
@@ -109,22 +111,22 @@ void my_qsort(void* sort_system, size_t elements, size_t size, int COMPARE(const
     } while(ptr_1 < ptr_2);
 
 
-    if(COMPARE((sort_system + ptr_1 * size), pivot) > 0)
+    if(COMPARE((new_sort_system + ptr_1 * size), pivot) > 0)
     {
-        byte_swap(sort_system + ptr_1 * size - size, pivot, size);
+        byte_swap(new_sort_system + ptr_1 * size - size, pivot, size);
     }
     else
     {
-        byte_swap(sort_system + ptr_1 * size, pivot, size);
+        byte_swap(new_sort_system + ptr_1 * size, pivot, size);
     }
 
     if(ptr_2 > 0)
     {
-        my_qsort(sort_system, ptr_2 , size, COMPARE);
+        my_qsort(new_sort_system, ptr_2 , size, COMPARE);
     }
     if(ptr_1 < elements - 1)
     {
-        my_qsort(sort_system + ptr_1 * size, elements - ptr_1, size, COMPARE);
+        my_qsort(new_sort_system + ptr_1 * size, elements - ptr_1, size, COMPARE);
     }
 }
 

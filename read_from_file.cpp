@@ -61,11 +61,11 @@ void split_lines(text_params* tp)
     tp -> arr_of_ptrs[num_of_ptr - 1].end = &tp -> buff[tp -> len_buff - 1];
 }
 
-FILE* open_file(text_params* tp)
+FILE* open_file(text_params* tp, const char* file_path)
 {
     assert(tp);
 
-    const char* path_to_file = "program_asm.txt";
+    const char* path_to_file = file_path;
 
     tp -> file = fopen(path_to_file, "r");
 
@@ -75,11 +75,11 @@ FILE* open_file(text_params* tp)
     return tp -> file;
 }
 
-text_params constructur_text_params()
+text_params constructur_text_params(const char* file_path)
 {
     text_params tp = {};
 
-    open_file(&tp);
+    open_file(&tp, file_path);
 
     tp.len_buff = count_symbls(tp.file);
 

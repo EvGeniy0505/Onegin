@@ -4,7 +4,7 @@
 
 int main()
 {
-    struct text_params tp = constructur_text_params();
+    struct text_params tp = constructur_text_params("Mockingbird.txt");
 
     FILE* text = fopen("text_in_file.txt", "a");
 

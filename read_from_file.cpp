@@ -61,13 +61,11 @@ void split_lines(text_params* tp)
     tp -> arr_of_ptrs[num_of_ptr - 1].end = &tp -> buff[tp -> len_buff - 1];
 }
 
-FILE* open_file(text_params* tp)
+FILE* open_file(text_params* tp, const char* name_file)
 {
     assert(tp);
 
-    const char* path_to_file = "Mockingbird.txt";
-
-    tp -> file = fopen(path_to_file, "r");
+    tp -> file = fopen(name_file, "r");
 
     assert(tp -> file);
     assert(ferror(tp -> file) == 0); // красава!
@@ -75,11 +73,11 @@ FILE* open_file(text_params* tp)
     return tp -> file;
 }
 
-text_params constructur_text_params()
+text_params constructur_text_params(const char* name_file)
 {
     text_params tp = {};
 
-    open_file(&tp);
+    open_file(&tp, name_file);
 
     tp.len_buff = count_symbls(tp.file);
 

@@ -61,25 +61,26 @@ void split_lines(text_params* tp)
     tp -> arr_of_ptrs[num_of_ptr - 1].end = &tp -> buff[tp -> len_buff - 1];
 }
 
-FILE* open_file(text_params* tp, const char* file_path)
+FILE* open_file(text_params* tp, const char* name_file)
 {
     assert(tp);
 
-    const char* path_to_file = file_path;
+    tp -> file = fopen(name_file, "r");
 
-    tp -> file = fopen(path_to_file, "r");
+    if(tp -> file == NULL)
+        fprintf(stderr, "FILE OPEN ERR!!!\n\n\n");
 
-    assert(tp -> file);
-    assert(ferror(tp -> file) == 0); // красава!
+    if(ferror(tp -> file) != 0)
+        fprintf(stderr, "ferror: FILE OPEN ERR!!!\n\n\n");
 
     return tp -> file;
 }
 
-text_params constructur_text_params(const char* file_path)
+text_params constructur_text_params(const char* name_file)
 {
     text_params tp = {};
 
-    open_file(&tp, file_path);
+    open_file(&tp, name_file);
 
     tp.len_buff = count_symbls(tp.file);
 

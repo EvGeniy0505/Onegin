@@ -78,9 +78,9 @@ void my_qsort(void* sort_system, size_t elements, size_t size, int COMPARE(const
     if(elements < 1)
         return;
 
-    char* new_sort_system = (char*) new_sort_system;
+    char* new_sort_system = (char*) sort_system;
 
-    void* pivot_candidate = (new_sort_system + size * (rand() % (elements)));
+    void* pivot_candidate = (new_sort_system + size * ((size_t)rand() % (elements)));
 
     byte_swap(pivot_candidate, new_sort_system, size);
 
@@ -135,7 +135,7 @@ void byte_swap(void* a, void* b, size_t size)
     char* a_real = (char*) a;
     char* b_real = (char*) b;
 
-    for(int i = 0; i < size; i++)
+    for(size_t i = 0; i < size; i++)
     {
         char symb = a_real[i];
         a_real[i] = b_real[i];
